@@ -109,6 +109,10 @@ export default {
 				'appear': {
 					'0%': { opacity: '0', filter: 'blur(8px)' },
 					'100%': { opacity: '1', filter: 'blur(0px)' }
+				},
+				'breathing': {
+					'0%, 100%': { transform: 'scale(1)', opacity: '0.7' },
+					'50%': { transform: 'scale(1.1)', opacity: '1' }
 				}
 			},
 			animation: {
@@ -119,7 +123,8 @@ export default {
 				'float': 'float 6s ease-in-out infinite',
 				'pulse-subtle': 'pulse-subtle 4s ease-in-out infinite',
 				'dissolve': 'dissolve 3s ease-out forwards',
-				'appear': 'appear 1.5s ease-out forwards'
+				'appear': 'appear 1.5s ease-out forwards',
+				'breathing-orb': 'breathing 6s ease-in-out infinite'
 			},
 			backgroundImage: {
 				'cosmic-gradient': 'linear-gradient(to bottom, #1A1F2C, #2D243B, #121212)',

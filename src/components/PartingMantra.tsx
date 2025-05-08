@@ -76,6 +76,15 @@ const PartingMantra = () => {
             >
               Begin Your Day
             </Button>
+            
+            <Button 
+              onClick={resetJourney}
+              variant="outline"
+              className="text-white/70 hover:text-white border-white/20 hover:border-white/30 backdrop-blur-sm animate-appear"
+              style={{ animationDelay: '3s' }}
+            >
+              Release These Thoughts
+            </Button>
           </div>
         </div>
       </div>

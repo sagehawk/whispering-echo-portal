@@ -10,9 +10,10 @@ const InvocationPrompt = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [showStateSelection, setShowStateSelection] = useState(true);
   const [selectedState, setSelectedState] = useState<string | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => {
-    // Fade in the component
+    // Fade in the component with a delay
     const timer = setTimeout(() => {
       setIsVisible(true);
     }, 500);
@@ -21,25 +22,44 @@ const InvocationPrompt = () => {
   }, []);
 
   const handleMindStateSelect = (state: 'morning' | 'afternoon' | 'creative' | 'stress' | 'gratitude' | 'evening') => {
-    setMindState(state);
-    setShowStateSelection(false);
+    setIsTransitioning(true);
+    
+    // Transition timing
+    setTimeout(() => {
+      setMindState(state);
+      setShowStateSelection(false);
+      setIsTransitioning(false);
+    }, 600);
   };
 
   const handleRadioChange = (state: string) => {
     setSelectedState(state);
-  };
-
-  const handleContinue = () => {
-    if (selectedState) {
-      handleMindStateSelect(selectedState as any);
-    }
+    // Automatically continue after selection
+    handleMindStateSelect(state as any);
   };
 
   const handleFinalContinue = () => {
-    setIsVisible(false);
+    setIsTransitioning(true);
+    
     setTimeout(() => {
-      setStage('reflection');
-    }, 1000);
+      setIsVisible(false);
+      
+      setTimeout(() => {
+        setStage('reflection');
+      }, 500);
+    }, 300);
+  };
+
+  const handleExitJourney = () => {
+    setIsTransitioning(true);
+    
+    setTimeout(() => {
+      setIsVisible(false);
+      
+      setTimeout(() => {
+        setStage('portal');
+      }, 500);
+    }, 300);
   };
 
   const mindStateOptions = [
@@ -58,7 +78,10 @@ const InvocationPrompt = () => {
         isVisible ? "opacity-100" : "opacity-0 translate-y-4"
       )}>
         {showStateSelection ? (
-          <div className="animate-fade-in">
+          <div className={cn(
+            "animate-fade-in transition-all duration-500",
+            isTransitioning ? "opacity-0 scale-95" : "opacity-100 scale-100"
+          )}>
             <h2 className="text-xl md:text-2xl font-normal text-mystic-gold mb-8">
               Where is your mind in this moment?
             </h2>
@@ -88,21 +111,13 @@ const InvocationPrompt = () => {
                   </label>
                 ))}
               </RadioGroup>
-              
-              <div className="mt-8">
-                <Button 
-                  onClick={handleContinue}
-                  variant="mystic"
-                  className="w-full"
-                  disabled={!selectedState}
-                >
-                  Begin Your Journey
-                </Button>
-              </div>
             </div>
           </div>
         ) : (
-          <>
+          <div className={cn(
+            "transition-all duration-500",
+            isTransitioning ? "opacity-0 scale-95" : "opacity-100 scale-100"
+          )}>
             <h2 className="text-xl md:text-2xl font-normal text-mystic-gold mb-4">
               Your Invocation
             </h2>
@@ -118,13 +133,23 @@ const InvocationPrompt = () => {
               share your thoughts.
             </p>
             
-            <Button 
-              onClick={handleFinalContinue}
-              variant="mystic"
-            >
-              Continue
-            </Button>
-          </>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button 
+                onClick={handleFinalContinue}
+                variant="mystic"
+              >
+                Continue
+              </Button>
+              
+              <Button 
+                onClick={handleExitJourney}
+                variant="outline"
+                className="text-white/70 hover:text-white border-white/20 hover:border-white/30 backdrop-blur-sm"
+              >
+                Release These Thoughts
+              </Button>
+            </div>
+          </div>
         )}
       </div>
     </div>
