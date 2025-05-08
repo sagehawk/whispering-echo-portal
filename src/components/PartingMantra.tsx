@@ -3,11 +3,15 @@ import React, { useState, useEffect } from 'react';
 import { useJourney } from '@/context/JourneyContext';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
+import { getMantraByState } from '@/lib/prompts';
 
 const PartingMantra = () => {
-  const { mantra, reflection, resetJourney, startNewJourney } = useJourney();
+  const { mantra, reflection, mindState, resetJourney, startNewJourney } = useJourney();
   const [isVisible, setIsVisible] = useState(false);
   const [showWords, setShowWords] = useState(true);
+  
+  // Get state-specific mantra if applicable
+  const stateMantra = mindState ? getMantraByState(mindState) : mantra;
   
   useEffect(() => {
     // Sequence of animations:
@@ -50,7 +54,7 @@ const PartingMantra = () => {
         )}>
           <div className="mantra-box my-8 animate-appear" style={{ animationDelay: '1.5s' }}>
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-normal cosmic-text">
-              {mantra}
+              {stateMantra}
             </h1>
           </div>
           

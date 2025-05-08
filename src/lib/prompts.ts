@@ -1,3 +1,4 @@
+
 // Daily invocations - thought-provoking questions
 export const invocations = [
   "What truth do you seek today?",
@@ -36,6 +37,50 @@ export const mantras = [
   "The circle is complete. Begin anew.",
 ];
 
+// Context-specific prompts
+export const statePrompts = {
+  morning: [
+    "Imagine the sun's first light rising within you—what ignites?",
+    "You stand at the threshold of possibility—what will you build today?",
+    "As dawn breaks in your mind, what clarity emerges?"
+  ],
+  afternoon: [
+    "See yourself at the peak of your day—what have you already conquered?",
+    "A second wind flows through you—what task now calls?",
+    "The day's middle path unfolds—where will you direct your energy?"
+  ],
+  creative: [
+    "A blank canvas waits—what colors will you pour from your mind?",
+    "Hear the whisper of a new idea—what shape does it take?",
+    "Creativity stirs in the depths—what wants to emerge through you?"
+  ],
+  stress: [
+    "Feel a weight lift from your shoulders—what does freedom feel like?",
+    "Picture a storm clearing in your mind—what clarity remains?",
+    "As tension dissolves, what truth surfaces in its place?"
+  ],
+  gratitude: [
+    "Recall one small miracle of today—how does your heart open?",
+    "A soft glow fills your being—what are you thankful for right now?",
+    "In this moment of appreciation, what blessings come into focus?"
+  ],
+  evening: [
+    "Trace the footsteps of today—where did you grow?",
+    "The moon invites stillness—what lesson do you carry forward?",
+    "As the day's light fades, what wisdom remains illuminated?"
+  ]
+};
+
+// State-specific mantras
+export const stateMantras = {
+  morning: "May your purpose guide every step.",
+  afternoon: "Your momentum is unwavering.",
+  creative: "Inspiration flows through you.",
+  stress: "Peace returns with every breath.",
+  gratitude: "Grace grows in a thankful heart.",
+  evening: "Rest now, wisdom wakes tomorrow."
+};
+
 // Get a random item from an array
 export const getRandomItem = <T>(array: T[]): T => {
   return array[Math.floor(Math.random() * array.length)];
@@ -60,33 +105,13 @@ export const getRandomMantra = (): string => {
   return getRandomItem(mantras);
 };
 
-// Get invocation based on work phase
-export const getInvocationByPhase = (phase: 'starting' | 'continuing' | 'ending'): string => {
-  const invocations = {
-    starting: [
-      "What intention will guide your work today?",
-      "What one achievement would make today meaningful?",
-      "What energy do you wish to bring to your tasks today?",
-      "What wisdom will you carry into this day's work?",
-      "What challenge are you ready to overcome today?"
-    ],
-    continuing: [
-      "What momentum are you building with your current work?",
-      "What has your work taught you so far today?",
-      "What resistance have you encountered, and how will you move through it?",
-      "What unseen opportunity might be hiding in your current task?",
-      "How has your energy shifted since you began working?"
-    ],
-    ending: [
-      "What accomplishment are you most proud of today?",
-      "What will you release before closing your workday?",
-      "What wisdom will you carry forward from today?",
-      "What completion brings you the most peace right now?",
-      "What boundary will you honor as you transition from work?"
-    ]
-  };
-  
-  const phaseInvocations = invocations[phase];
-  const randomIndex = Math.floor(Math.random() * phaseInvocations.length);
-  return phaseInvocations[randomIndex];
+// Get prompt based on mind state
+export const getPromptByState = (state: 'morning' | 'afternoon' | 'creative' | 'stress' | 'gratitude' | 'evening'): string => {
+  const statePromptsArray = statePrompts[state];
+  return getRandomItem(statePromptsArray);
+};
+
+// Get mantra based on mind state
+export const getMantraByState = (state: 'morning' | 'afternoon' | 'creative' | 'stress' | 'gratitude' | 'evening'): string => {
+  return stateMantras[state];
 };

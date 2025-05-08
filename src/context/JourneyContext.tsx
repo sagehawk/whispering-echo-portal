@@ -1,11 +1,12 @@
+
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { getTodaysInvocation, getRandomMantra, getInvocationByPhase } from '@/lib/prompts';
+import { getTodaysInvocation, getRandomMantra, getPromptByState } from '@/lib/prompts';
 
 // Define the journey stages
 export type JourneyStage = 'portal' | 'invocation' | 'reflection' | 'mantra' | 'reset';
 
-// Define work phases
-export type WorkPhase = 'starting' | 'continuing' | 'ending' | null;
+// Define mind states
+export type MindState = 'morning' | 'afternoon' | 'creative' | 'stress' | 'gratitude' | 'evening' | null;
 
 // Define the context shape
 type JourneyContextType = {
@@ -13,10 +14,10 @@ type JourneyContextType = {
   reflection: string;
   invocation: string;
   mantra: string;
-  workPhase: WorkPhase;
+  mindState: MindState;
   setStage: (stage: JourneyStage) => void;
   setReflection: (text: string) => void;
-  setWorkPhase: (phase: WorkPhase) => void;
+  setMindState: (state: MindState) => void;
   resetJourney: () => void;
   startNewJourney: () => void;
   submitReflection: () => void;
@@ -31,7 +32,7 @@ export const JourneyProvider = ({ children }: { children: ReactNode }) => {
   const [reflection, setReflection] = useState<string>('');
   const [invocation, setInvocation] = useState<string>('');
   const [mantra, setMantra] = useState<string>('');
-  const [workPhase, setWorkPhase] = useState<WorkPhase>(null);
+  const [mindState, setMindState] = useState<MindState>(null);
 
   // Initialize invocation on first load
   useEffect(() => {
@@ -39,12 +40,12 @@ export const JourneyProvider = ({ children }: { children: ReactNode }) => {
     setMantra(getRandomMantra());
   }, []);
 
-  // Update invocation when work phase changes
+  // Update invocation when mind state changes
   useEffect(() => {
-    if (workPhase) {
-      setInvocation(getInvocationByPhase(workPhase));
+    if (mindState) {
+      setInvocation(getPromptByState(mindState));
     }
-  }, [workPhase]);
+  }, [mindState]);
 
   // Function to handle reflection submission
   const submitReflection = () => {
@@ -57,7 +58,7 @@ export const JourneyProvider = ({ children }: { children: ReactNode }) => {
   const resetJourney = () => {
     setStage('reset');
     setReflection('');
-    setWorkPhase(null);
+    setMindState(null);
     
     // After a brief pause, return to portal
     setTimeout(() => {
@@ -69,7 +70,7 @@ export const JourneyProvider = ({ children }: { children: ReactNode }) => {
   const startNewJourney = () => {
     setStage('invocation');
     setReflection('');
-    setInvocation(getInvocationByPhase(workPhase || 'continuing'));
+    setInvocation(getPromptByState(mindState || 'morning'));
     setMantra(getRandomMantra());
   };
 
@@ -79,10 +80,10 @@ export const JourneyProvider = ({ children }: { children: ReactNode }) => {
     reflection,
     invocation,
     mantra,
-    workPhase,
+    mindState,
     setStage,
     setReflection,
-    setWorkPhase,
+    setMindState,
     resetJourney,
     startNewJourney,
     submitReflection

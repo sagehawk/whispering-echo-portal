@@ -5,9 +5,9 @@ import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
 
 const InvocationPrompt = () => {
-  const { invocation, setStage, workPhase, setWorkPhase } = useJourney();
+  const { invocation, setStage, mindState, setMindState } = useJourney();
   const [isVisible, setIsVisible] = useState(false);
-  const [showPhaseSelection, setShowPhaseSelection] = useState(true);
+  const [showStateSelection, setShowStateSelection] = useState(true);
 
   useEffect(() => {
     // Fade in the component
@@ -18,9 +18,9 @@ const InvocationPrompt = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleWorkPhaseSelect = (phase: 'starting' | 'continuing' | 'ending') => {
-    setWorkPhase(phase);
-    setShowPhaseSelection(false);
+  const handleMindStateSelect = (state: 'morning' | 'afternoon' | 'creative' | 'stress' | 'gratitude' | 'evening') => {
+    setMindState(state);
+    setShowStateSelection(false);
   };
 
   const handleContinue = () => {
@@ -36,39 +36,60 @@ const InvocationPrompt = () => {
         "max-w-xl mx-auto text-center transition-all duration-1000",
         isVisible ? "opacity-100" : "opacity-0 translate-y-4"
       )}>
-        {showPhaseSelection ? (
+        {showStateSelection ? (
           <div className="animate-fade-in">
             <h2 className="text-xl md:text-2xl font-normal text-mystic-gold/80 mb-6">
-              Where are you in your day?
+              Where is your mind in this moment?
             </h2>
             
-            <div className="flex flex-col gap-4 md:flex-row md:gap-6 justify-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <Button
-                onClick={() => handleWorkPhaseSelect('starting')}
+                onClick={() => handleMindStateSelect('morning')}
                 className="mystic-button"
               >
-                Starting Work
+                Morning Launch
               </Button>
               
               <Button
-                onClick={() => handleWorkPhaseSelect('continuing')}
+                onClick={() => handleMindStateSelect('afternoon')}
                 className="mystic-button"
               >
-                Continuing Work
+                Afternoon Momentum
               </Button>
               
               <Button
-                onClick={() => handleWorkPhaseSelect('ending')}
+                onClick={() => handleMindStateSelect('creative')}
                 className="mystic-button"
               >
-                Ending Work
+                Creative Spark
+              </Button>
+              
+              <Button
+                onClick={() => handleMindStateSelect('stress')}
+                className="mystic-button"
+              >
+                Stress Release
+              </Button>
+              
+              <Button
+                onClick={() => handleMindStateSelect('gratitude')}
+                className="mystic-button"
+              >
+                Gratitude Pause
+              </Button>
+              
+              <Button
+                onClick={() => handleMindStateSelect('evening')}
+                className="mystic-button"
+              >
+                Evening Reflection
               </Button>
             </div>
           </div>
         ) : (
           <>
             <h2 className="text-xl md:text-2xl font-normal text-mystic-gold/80 mb-4">
-              Daily Invocation
+              Your Invocation
             </h2>
             
             <div className="mantra-box my-8">
