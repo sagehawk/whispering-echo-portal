@@ -58,10 +58,11 @@ const PartingMantra = () => {
             </h1>
           </div>
           
-          <div className="flex flex-col md:flex-row gap-4 mt-8 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 mt-8 justify-center">
             <Button 
               onClick={startNewJourney}
-              className="mystic-button animate-appear"
+              variant="mystic"
+              className="animate-appear"
               style={{ animationDelay: '2s' }}
             >
               Try Another Reflection
@@ -69,7 +70,8 @@ const PartingMantra = () => {
             
             <Button 
               onClick={resetJourney}
-              className="mystic-button animate-appear"
+              variant="mystic"
+              className="animate-appear"
               style={{ animationDelay: '2.5s' }}
             >
               Begin Your Day

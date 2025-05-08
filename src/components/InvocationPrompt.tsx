@@ -3,11 +3,13 @@ import React, { useState, useEffect } from 'react';
 import { useJourney } from '@/context/JourneyContext';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
+import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 
 const InvocationPrompt = () => {
   const { invocation, setStage, mindState, setMindState } = useJourney();
   const [isVisible, setIsVisible] = useState(false);
   const [showStateSelection, setShowStateSelection] = useState(true);
+  const [selectedState, setSelectedState] = useState<string | null>(null);
 
   useEffect(() => {
     // Fade in the component
@@ -23,12 +25,31 @@ const InvocationPrompt = () => {
     setShowStateSelection(false);
   };
 
+  const handleRadioChange = (state: string) => {
+    setSelectedState(state);
+  };
+
   const handleContinue = () => {
+    if (selectedState) {
+      handleMindStateSelect(selectedState as any);
+    }
+  };
+
+  const handleFinalContinue = () => {
     setIsVisible(false);
     setTimeout(() => {
       setStage('reflection');
     }, 1000);
   };
+
+  const mindStateOptions = [
+    { id: 'morning', label: 'Morning Launch', description: 'Start your day with intention' },
+    { id: 'afternoon', label: 'Afternoon Momentum', description: 'Maintain or regain midday focus' },
+    { id: 'creative', label: 'Creative Spark', description: 'Seek inspiration and new ideas' },
+    { id: 'stress', label: 'Stress Release', description: 'Let go of tension and overwhelm' },
+    { id: 'gratitude', label: 'Gratitude Pause', description: 'Cultivate appreciation and calm' },
+    { id: 'evening', label: 'Evening Reflection', description: 'Close your day with awareness' },
+  ];
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-6">
@@ -38,57 +59,51 @@ const InvocationPrompt = () => {
       )}>
         {showStateSelection ? (
           <div className="animate-fade-in">
-            <h2 className="text-xl md:text-2xl font-normal text-mystic-gold/80 mb-6">
+            <h2 className="text-xl md:text-2xl font-normal text-mystic-gold mb-8">
               Where is your mind in this moment?
             </h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Button
-                onClick={() => handleMindStateSelect('morning')}
-                className="mystic-button"
-              >
-                Morning Launch
-              </Button>
+            <div className="mantra-box bg-gradient-to-b from-mystic-purple/20 to-mystic-blue/20 p-6 backdrop-blur-sm">
+              <RadioGroup className="space-y-4 text-left" value={selectedState || ''} onValueChange={handleRadioChange}>
+                {mindStateOptions.map((option) => (
+                  <label 
+                    key={option.id}
+                    className={cn(
+                      "flex items-start p-4 rounded-md transition-all duration-300 cursor-pointer",
+                      selectedState === option.id 
+                        ? "bg-gradient-to-r from-mystic-gold/20 to-transparent border border-mystic-gold/30" 
+                        : "hover:bg-white/5 border border-white/10"
+                    )}
+                  >
+                    <RadioGroupItem value={option.id} id={option.id} className="mt-1" />
+                    <div className="ml-3">
+                      <div className={cn(
+                        "font-medium",
+                        selectedState === option.id ? "text-mystic-gold" : "text-white"
+                      )}>
+                        {option.label}
+                      </div>
+                      <div className="text-sm text-white/60">{option.description}</div>
+                    </div>
+                  </label>
+                ))}
+              </RadioGroup>
               
-              <Button
-                onClick={() => handleMindStateSelect('afternoon')}
-                className="mystic-button"
-              >
-                Afternoon Momentum
-              </Button>
-              
-              <Button
-                onClick={() => handleMindStateSelect('creative')}
-                className="mystic-button"
-              >
-                Creative Spark
-              </Button>
-              
-              <Button
-                onClick={() => handleMindStateSelect('stress')}
-                className="mystic-button"
-              >
-                Stress Release
-              </Button>
-              
-              <Button
-                onClick={() => handleMindStateSelect('gratitude')}
-                className="mystic-button"
-              >
-                Gratitude Pause
-              </Button>
-              
-              <Button
-                onClick={() => handleMindStateSelect('evening')}
-                className="mystic-button"
-              >
-                Evening Reflection
-              </Button>
+              <div className="mt-8">
+                <Button 
+                  onClick={handleContinue}
+                  variant="mystic"
+                  className="w-full"
+                  disabled={!selectedState}
+                >
+                  Begin Your Journey
+                </Button>
+              </div>
             </div>
           </div>
         ) : (
           <>
-            <h2 className="text-xl md:text-2xl font-normal text-mystic-gold/80 mb-4">
+            <h2 className="text-xl md:text-2xl font-normal text-mystic-gold mb-4">
               Your Invocation
             </h2>
             
@@ -104,8 +119,8 @@ const InvocationPrompt = () => {
             </p>
             
             <Button 
-              onClick={handleContinue}
-              className="mystic-button"
+              onClick={handleFinalContinue}
+              variant="mystic"
             >
               Continue
             </Button>
