@@ -1,9 +1,11 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { getTodaysInvocation, getRandomMantra } from '@/lib/prompts';
+import { getTodaysInvocation, getRandomMantra, getInvocationByPhase } from '@/lib/prompts';
 
 // Define the journey stages
 export type JourneyStage = 'portal' | 'invocation' | 'reflection' | 'mantra' | 'reset';
+
+// Define work phases
+export type WorkPhase = 'starting' | 'continuing' | 'ending' | null;
 
 // Define the context shape
 type JourneyContextType = {
@@ -11,9 +13,12 @@ type JourneyContextType = {
   reflection: string;
   invocation: string;
   mantra: string;
+  workPhase: WorkPhase;
   setStage: (stage: JourneyStage) => void;
   setReflection: (text: string) => void;
+  setWorkPhase: (phase: WorkPhase) => void;
   resetJourney: () => void;
+  startNewJourney: () => void;
   submitReflection: () => void;
 };
 
@@ -26,12 +31,20 @@ export const JourneyProvider = ({ children }: { children: ReactNode }) => {
   const [reflection, setReflection] = useState<string>('');
   const [invocation, setInvocation] = useState<string>('');
   const [mantra, setMantra] = useState<string>('');
+  const [workPhase, setWorkPhase] = useState<WorkPhase>(null);
 
   // Initialize invocation on first load
   useEffect(() => {
     setInvocation(getTodaysInvocation());
     setMantra(getRandomMantra());
   }, []);
+
+  // Update invocation when work phase changes
+  useEffect(() => {
+    if (workPhase) {
+      setInvocation(getInvocationByPhase(workPhase));
+    }
+  }, [workPhase]);
 
   // Function to handle reflection submission
   const submitReflection = () => {
@@ -44,11 +57,20 @@ export const JourneyProvider = ({ children }: { children: ReactNode }) => {
   const resetJourney = () => {
     setStage('reset');
     setReflection('');
+    setWorkPhase(null);
     
     // After a brief pause, return to portal
     setTimeout(() => {
       setStage('portal');
     }, 1500);
+  };
+
+  // Start a new journey (keeping the same phase but getting new prompts)
+  const startNewJourney = () => {
+    setStage('invocation');
+    setReflection('');
+    setInvocation(getInvocationByPhase(workPhase || 'continuing'));
+    setMantra(getRandomMantra());
   };
 
   // Context value
@@ -57,9 +79,12 @@ export const JourneyProvider = ({ children }: { children: ReactNode }) => {
     reflection,
     invocation,
     mantra,
+    workPhase,
     setStage,
     setReflection,
+    setWorkPhase,
     resetJourney,
+    startNewJourney,
     submitReflection
   };
 

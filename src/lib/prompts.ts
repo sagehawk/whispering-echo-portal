@@ -1,4 +1,3 @@
-
 // Daily invocations - thought-provoking questions
 export const invocations = [
   "What truth do you seek today?",
@@ -59,4 +58,35 @@ export const getTodaysInvocation = (): string => {
 // Get a random mantra
 export const getRandomMantra = (): string => {
   return getRandomItem(mantras);
+};
+
+// Get invocation based on work phase
+export const getInvocationByPhase = (phase: 'starting' | 'continuing' | 'ending'): string => {
+  const invocations = {
+    starting: [
+      "What intention will guide your work today?",
+      "What one achievement would make today meaningful?",
+      "What energy do you wish to bring to your tasks today?",
+      "What wisdom will you carry into this day's work?",
+      "What challenge are you ready to overcome today?"
+    ],
+    continuing: [
+      "What momentum are you building with your current work?",
+      "What has your work taught you so far today?",
+      "What resistance have you encountered, and how will you move through it?",
+      "What unseen opportunity might be hiding in your current task?",
+      "How has your energy shifted since you began working?"
+    ],
+    ending: [
+      "What accomplishment are you most proud of today?",
+      "What will you release before closing your workday?",
+      "What wisdom will you carry forward from today?",
+      "What completion brings you the most peace right now?",
+      "What boundary will you honor as you transition from work?"
+    ]
+  };
+  
+  const phaseInvocations = invocations[phase];
+  const randomIndex = Math.floor(Math.random() * phaseInvocations.length);
+  return phaseInvocations[randomIndex];
 };

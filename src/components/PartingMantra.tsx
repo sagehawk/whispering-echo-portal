@@ -2,9 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import { useJourney } from '@/context/JourneyContext';
 import { cn } from '@/lib/utils';
+import { Button } from './ui/button';
 
 const PartingMantra = () => {
-  const { mantra, reflection, resetJourney } = useJourney();
+  const { mantra, reflection, resetJourney, startNewJourney } = useJourney();
   const [isVisible, setIsVisible] = useState(false);
   const [showWords, setShowWords] = useState(true);
   
@@ -21,20 +22,13 @@ const PartingMantra = () => {
       // Then, fade out the reflection words after 2 seconds
       const fadeTimer = setTimeout(() => {
         setShowWords(false);
-        
-        // Finally, automatically reset after a delay
-        const resetTimer = setTimeout(() => {
-          resetJourney();
-        }, 6000);
-        
-        return () => clearTimeout(resetTimer);
       }, 2000);
       
       return () => clearTimeout(fadeTimer);
     }, 500);
     
     return () => clearTimeout(visibleTimer);
-  }, [resetJourney]);
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-6">
@@ -60,16 +54,23 @@ const PartingMantra = () => {
             </h1>
           </div>
           
-          <button 
-            onClick={resetJourney}
-            className={cn(
-              "mystic-button mt-8",
-              "animate-appear opacity-0"
-            )}
-            style={{ animationDelay: '3s' }}
-          >
-            Return to Beginning
-          </button>
+          <div className="flex flex-col md:flex-row gap-4 mt-8 justify-center">
+            <Button 
+              onClick={startNewJourney}
+              className="mystic-button animate-appear"
+              style={{ animationDelay: '2s' }}
+            >
+              Try Another Reflection
+            </Button>
+            
+            <Button 
+              onClick={resetJourney}
+              className="mystic-button animate-appear"
+              style={{ animationDelay: '2.5s' }}
+            >
+              Begin Your Day
+            </Button>
+          </div>
         </div>
       </div>
     </div>
