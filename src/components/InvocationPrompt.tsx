@@ -127,21 +127,13 @@ const InvocationPrompt = () => {
               share your thoughts.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex justify-center">
               <Button 
                 onClick={handleFinalContinue}
                 variant="mystic"
                 className="text-mystic-gold hover:text-white shadow-[0_0_15px_rgba(191,161,129,0.2)] hover:shadow-[0_0_20px_rgba(191,161,129,0.3)]"
               >
-                Continue
-              </Button>
-              
-              <Button 
-                onClick={handleExitJourney}
-                variant="outline"
-                className="text-white/70 hover:text-white border-white/20 hover:border-white/30 backdrop-blur-sm"
-              >
-                Release These Thoughts
+                Enter the Reflection Space
               </Button>
             </div>
           </div>
