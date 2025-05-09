@@ -35,7 +35,7 @@ const PartingMantra = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-6">
+    <div className="flex flex-col items-center justify-start min-h-screen p-6 pt-8 md:pt-16 md:justify-center">
       <div className={cn(
         "max-w-xl mx-auto text-center transition-all duration-1000",
         isVisible ? "opacity-100" : "opacity-0"
