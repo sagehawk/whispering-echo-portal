@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { useJourney } from '@/context/JourneyContext';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
-import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 
 const InvocationPrompt = () => {
   const { invocation, setStage, mindState, setMindState } = useJourney();
@@ -23,19 +22,14 @@ const InvocationPrompt = () => {
 
   const handleMindStateSelect = (state: 'morning' | 'afternoon' | 'creative' | 'stress' | 'gratitude' | 'evening') => {
     setIsTransitioning(true);
+    setSelectedState(state);
     
-    // Transition timing
+    // Transition timing with a mystical fade effect
     setTimeout(() => {
       setMindState(state);
       setShowStateSelection(false);
       setIsTransitioning(false);
-    }, 600);
-  };
-
-  const handleRadioChange = (state: string) => {
-    setSelectedState(state);
-    // Automatically continue after selection
-    handleMindStateSelect(state as any);
+    }, 800);
   };
 
   const handleFinalContinue = () => {
@@ -79,18 +73,19 @@ const InvocationPrompt = () => {
       )}>
         {showStateSelection ? (
           <div className={cn(
-            "animate-fade-in transition-all duration-500",
-            isTransitioning ? "opacity-0 scale-95" : "opacity-100 scale-100"
+            "animate-fade-in transition-all duration-800",
+            isTransitioning ? "opacity-0 scale-95 blur-sm" : "opacity-100 scale-100"
           )}>
             <h2 className="text-xl md:text-2xl font-normal text-mystic-gold mb-8">
               Where is your mind in this moment?
             </h2>
             
             <div className="mantra-box bg-gradient-to-b from-mystic-purple/20 to-mystic-blue/20 p-6 backdrop-blur-sm">
-              <RadioGroup className="space-y-4 text-left" value={selectedState || ''} onValueChange={handleRadioChange}>
+              <div className="space-y-4 text-left">
                 {mindStateOptions.map((option) => (
-                  <label 
+                  <div 
                     key={option.id}
+                    onClick={() => handleMindStateSelect(option.id as any)}
                     className={cn(
                       "flex items-start p-4 rounded-md transition-all duration-300 cursor-pointer",
                       selectedState === option.id 
@@ -98,8 +93,7 @@ const InvocationPrompt = () => {
                         : "hover:bg-white/5 border border-white/10"
                     )}
                   >
-                    <RadioGroupItem value={option.id} id={option.id} className="mt-1" />
-                    <div className="ml-3">
+                    <div>
                       <div className={cn(
                         "font-medium",
                         selectedState === option.id ? "text-mystic-gold" : "text-white"
@@ -108,15 +102,15 @@ const InvocationPrompt = () => {
                       </div>
                       <div className="text-sm text-white/60">{option.description}</div>
                     </div>
-                  </label>
+                  </div>
                 ))}
-              </RadioGroup>
+              </div>
             </div>
           </div>
         ) : (
           <div className={cn(
-            "transition-all duration-500",
-            isTransitioning ? "opacity-0 scale-95" : "opacity-100 scale-100"
+            "transition-all duration-800",
+            isTransitioning ? "opacity-0 scale-95 blur-sm" : "opacity-100 scale-100 animate-appear"
           )}>
             <h2 className="text-xl md:text-2xl font-normal text-mystic-gold mb-4">
               Your Invocation
@@ -137,6 +131,7 @@ const InvocationPrompt = () => {
               <Button 
                 onClick={handleFinalContinue}
                 variant="mystic"
+                className="text-mystic-gold hover:text-white shadow-[0_0_15px_rgba(191,161,129,0.2)] hover:shadow-[0_0_20px_rgba(191,161,129,0.3)]"
               >
                 Continue
               </Button>

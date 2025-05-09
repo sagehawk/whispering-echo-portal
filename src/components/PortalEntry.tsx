@@ -44,11 +44,10 @@ const PortalEntry = () => {
         className={cn(
           "w-16 h-16 md:w-24 md:h-24 rounded-full mb-10 relative",
           "bg-gradient-to-b from-mystic-gold/20 to-transparent",
-          "animate-breathing-orb", // We'll add this animation in tailwind config
           isAnimating ? "scale-150 opacity-0 transition-all duration-1000" : "scale-100 transition-all duration-500"
         )}
       >
-        <div className="absolute inset-0 rounded-full bg-mystic-glow animate-breathing-orb"></div>
+        <div className="absolute inset-0 rounded-full bg-mystic-glow animate-slow-breathing"></div>
       </div>
       
       <p 
@@ -63,8 +62,11 @@ const PortalEntry = () => {
       
       <Button 
         onClick={enterPortal}
+        variant="mystic"
         className={cn(
-          "mystic-button",
+          "text-mystic-gold hover:text-white border-mystic-gold/30 hover:border-mystic-gold/60",
+          "bg-gradient-to-r from-mystic-purple/30 to-mystic-blue/20 hover:from-mystic-purple/40 hover:to-mystic-blue/30",
+          "shadow-[0_0_15px_rgba(191,161,129,0.2)] hover:shadow-[0_0_20px_rgba(191,161,129,0.3)]",
           isAnimating ? "opacity-0 translate-y-4" : "opacity-100",
           "transition-all duration-500"
         )}
